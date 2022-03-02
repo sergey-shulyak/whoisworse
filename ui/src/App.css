@@ -1,0 +1,155 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+.app {
+  background-color: #000;
+  min-height: 100vh;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+}
+
+.header {
+  width: 100%;
+}
+
+.headerText {
+  margin: -14px;
+  margin-bottom: 30px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 128px;
+  font-weight: 900;
+  text-transform: capitalize;
+  text-align: center;
+  white-space: nowrap;
+  position: relative;
+}
+
+.disclaimer {
+  font-size: 18px;
+  text-align: center;
+  position: relative;
+  left: -70px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 56px;
+}
+
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contestantPhoto {
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+}
+
+.contestantContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.shareContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.shareItemMargin {
+  margin-bottom: 25px;
+}
+
+.shareLabel {
+  color: rgb(128, 128, 128);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.rotated1 {
+  transform: rotate(270deg);
+}
+
+.rotated2 {
+  transform: rotate(90deg);
+}
+
+.icon {
+  width: 24px;
+  cursor: pointer;
+}
+
+.footerContainer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.meterLeft {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #fff;
+  height: 100px;
+  width: 500px;
+  color: #000;
+  padding-right: 3rem;
+}
+
+.meterRight {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  background-color: #000;
+  border: 1px solid #fff;
+  height: 100px;
+  width: 500px;
+  padding-left: 3rem;
+}
+
+.meterCount {
+  font-weight: 800;
+  font-size: 36px;
+  margin-right: 1rem;
+}
+
+.meterIcon {
+  margin-right: 0.5rem;
+}
+
+.ethContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.ethLabel {
+  margin-right: 0.5rem;
+  font-size: 14pt;
+  color: rgb(128, 128, 128);
+  font-weight: bold;
+}
+
+.ethWallet {
+  font-size: 14pt;
+  margin-right: 0.5rem;
+}
+
+.sideText {
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.copyMargin {
+  margin-left: 17px;
+}
