@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Modal from "react-modal";
 
+import { ReactComponent as LinkIcon } from "./icons/link.svg";
+import { ReactComponent as CopyIcon } from "./icons/copy.svg";
+import { ReactComponent as CopiedIcon } from "./icons/copied.svg";
+import { ReactComponent as EthBlackIcon } from "./icons/eth_black.svg";
+import { ReactComponent as EthWHiteIcon } from "./icons/eth_white.svg";
+
 import { getEthBalance } from "./api";
 
 import "./App.css";
@@ -105,12 +111,14 @@ function App() {
               0xD146e69eB7faC9d4A68Eba1F81207ad5eFe5D4EF
             </span>
             <div className="iconContainer">
-              <img
-                className="icon copyMargin pointer"
-                src={showCopied1 ? "icons/done.png" : "icons/copy.png"}
-                alt="Copy"
-                onClick={handleCopy("pEth")}
-              />
+              {showCopied1 ? (
+                <CopiedIcon className="icon copyMargin pointer" />
+              ) : (
+                <CopyIcon
+                  className="icon copyMargin pointer"
+                  onClick={handleCopy("pEth")}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -128,13 +136,14 @@ function App() {
 
           <p className="shareLabel">Share link</p>
           <div className="iconContainer">
-            <img
-              className="icon shareItemMargin pointer"
-              src={showCopied3 ? "icons/done.png" : "icons/link.png"}
-              alt="Link"
-              tooltip="Copy link"
-              onClick={handleCopyLink}
-            />
+            {showCopied3 ? (
+              <CopiedIcon className="icon shareItemMargin pointer" />
+            ) : (
+              <LinkIcon
+                className="icon shareItemMargin pointer"
+                onClick={handleCopyLink}
+              />
+            )}
           </div>
         </div>
 
@@ -146,31 +155,29 @@ function App() {
               0x34d704Ff8bFB551bF1E7Ede1b411C77D8a1A8aEE
             </span>
             <div className="iconContainer">
-              <img
-                className="icon copyMargin pointer"
-                src={showCopied2 ? "icons/done.png" : "icons/copy.png"}
-                alt="Copy"
-                onClick={handleCopy("hEth")}
-              />
+              {showCopied2 ? (
+                <CopiedIcon className="icon copyMargin pointer" />
+              ) : (
+                <CopyIcon
+                  className="icon copyMargin pointer"
+                  onClick={handleCopy("hEth")}
+                />
+              )}
             </div>
           </div>
         </div>
-
-        {/* <p className="rotated2 sideText">Smart Contract</p> */}
       </main>
 
       <footer className="footerContainer">
         <div className="meterLeft" id="leftCounter">
           <span className="meterCount">{pEth}</span>
-          <img className="icon" src="icons/eth_black.png" alt="Etherium" />
+          {/* <img className="icon" src="icons/eth_black.png" alt="Etherium" />
+           */}
+          <EthBlackIcon className="icon meterIcon" />
         </div>
         <div className="meterRight" id="rightCounter">
           <span className="meterCount">{hEth}</span>
-          <img
-            className="icon meterIcon"
-            src="icons/eth_white.png"
-            alt="Etherium"
-          />
+          <EthWHiteIcon className="icon meterIcon" />
         </div>
       </footer>
       <Modal
@@ -182,9 +189,6 @@ function App() {
         overlayClassName="overlay"
       >
         <div className="modalContent">
-          <div className="crossIcon" onClick={() => setAboutOpen(false)}>
-            x
-          </div>
           <h2 className="modalTitle">who we are</h2>
           <p>
             This website was created and is run by a group of Ukrainian
