@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Modal from "react-modal";
 
 import { getEthBalance } from "./api";
@@ -27,6 +27,15 @@ function App() {
   const [showCopied3, setCopied3] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
 
+  const getCounterWidth = useCallback(() => {
+    const getWitdh = (n) => ((Number(n) % 100) * 100 + 100).toString() + "px";
+
+    const leftWidth = getWitdh(pEth);
+    const rightWidth = getWitdh(hEth);
+
+    return [leftWidth, rightWidth];
+  }, [hEth, pEth]);
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       getEthBalance()
@@ -43,7 +52,7 @@ function App() {
     }, 3000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [getCounterWidth]);
 
   const handleCopy = (elId) => () => {
     const el = document.getElementById(elId);
@@ -62,15 +71,6 @@ function App() {
         setCopied2(false);
       }, 2000);
     }
-  };
-
-  const getCounterWidth = () => {
-    const getWitdh = (n) => ((Number(n) % 100) * 100 + 100).toString() + "px";
-
-    const leftWidth = getWitdh(pEth);
-    const rightWidth = getWitdh(hEth);
-
-    return [leftWidth, rightWidth];
   };
 
   const handleCopyLink = () => {
