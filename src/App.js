@@ -11,6 +11,7 @@ import { getEthBalance } from "./api";
 
 import "./App.css";
 
+const ethDivider = 1000000000000000000.0;
 const customStyles = {
   content: {
     width: "900px",
@@ -28,37 +29,49 @@ const customStyles = {
 function App() {
   const [pEth, setPEth] = useState(0);
   const [hEth, setHEth] = useState(0);
+
   const [showCopied1, setCopied1] = useState(false);
   const [showCopied2, setCopied2] = useState(false);
   const [showCopied3, setCopied3] = useState(false);
+
   const [aboutOpen, setAboutOpen] = useState(false);
 
-  const getCounterWidth = useCallback(() => {
-    const getWitdh = (n) => ((Number(n) % 100) * 100 + 100).toString() + "px";
-
-    const leftWidth = getWitdh(pEth);
-    const rightWidth = getWitdh(hEth);
-
-    return [leftWidth, rightWidth];
-  }, [hEth, pEth]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const buildLineWidth = (pEth, hEth) => {
+      const calcPerc = (a, b) => a === 0 ? 0 : (a * 100) / b;
+
+      if (pEth > hEth) {
+        return [100, calcPerc(hEth, pEth)]
+      } else if (hEth > pEth) {
+        return [calcPerc(pEth, hEth), 100]
+      } else {
+        return [100, 100]
+      }
+    };
+
     const intervalId = setInterval(() => {
       getEthBalance()
-        .then(([data1, data2]) => {
-          setPEth(data1);
-          setHEth(data2);
-        })
-        .then(() => {
-          const [left, right] = getCounterWidth();
+        .then(([pData, hData]) => {
+          setPEth(formatAmount(pData));
+          setHEth(formatAmount(hData));
 
-          document.getElementById("leftCounter").style.width = left;
-          document.getElementById("rightCounter").style.width = right;
+          const [pVal, hVal] = buildLineWidth(pData, hData);
+
+          document.getElementById("leftCounter").style.width = `${10 + pVal / 3}vw`;
+          document.getElementById("rightCounter").style.width = `${10 +hVal / 3}vw`;
+
+          setIsLoading(false)
         });
-    }, 3000);
+    }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [getCounterWidth]);
+  }, []);
+
+
+
+  const formatAmount = (amount) =>  amount / ethDivider;
 
   const handleCopy = (elId) => () => {
     const el = document.getElementById(elId);
@@ -88,17 +101,20 @@ function App() {
     }, 2000);
   };
 
+  const LoadingSpinnerWhite = <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+  const LoadingSpinnerBlack = <div class="lds-ellipsis-black"><div></div><div></div><div></div><div></div></div>
+
   return (
     <div className="app" id="app">
       <header className="headerContainer">
         <h1 className="headerText">Who's worse?</h1>
         <h2 className="disclaimer">
-          ALL MONEY GOES TO THE UKRAINIAN ARMY ◉ ALL MONEY GOES TO THE UKRAINIAN
-          ARMY ◉ ALL MONEY GOES TO THE UKRAINIAN ARMY ◉ ALL MONEY GOES TO THE
-          UKRAINIAN ARMY ◉ ALL MONEY GOES TO THE UKRAINIAN ARMY ◉ ALL MONEY GOES
-          TO THE UKRAINIAN ARMY ◉ ALL MONEY GOES TO THE UKRAINIAN ARMY ◉ ALL
-          MONEY GOES TO THE UKRAINIAN ARMY ◉ ALL MONEY GOES TO THE UKRAINIAN
-          ARMY ◉ ALL MONEY GOES TO THE UKRAINIAN ARMY ◉ ALL MONEY GOES TO THE
+          ALL MONEY GOES TO THE UKRAINIAN ARMY &nbsp;&nbsp;●&nbsp;&nbsp; ALL MONEY GOES TO THE UKRAINIAN
+          ARMY &nbsp;&nbsp;●&nbsp;&nbsp; ALL MONEY GOES TO THE UKRAINIAN ARMY &nbsp;&nbsp;●&nbsp;&nbsp; ALL MONEY GOES TO THE
+          UKRAINIAN ARMY &nbsp;&nbsp;●&nbsp;&nbsp; ALL MONEY GOES TO THE UKRAINIAN ARMY &nbsp;&nbsp;●&nbsp;&nbsp; ALL MONEY GOES
+          TO THE UKRAINIAN ARMY &nbsp;&nbsp;●&nbsp;&nbsp; ALL MONEY GOES TO THE UKRAINIAN ARMY &nbsp;&nbsp;●&nbsp;&nbsp; ALL
+          MONEY GOES TO THE UKRAINIAN ARMY &nbsp;&nbsp;●&nbsp;&nbsp; ALL MONEY GOES TO THE UKRAINIAN
+          ARMY &nbsp;&nbsp;●&nbsp;&nbsp; ALL MONEY GOES TO THE UKRAINIAN ARMY &nbsp;&nbsp;●&nbsp;&nbsp; ALL MONEY GOES TO THE
           UKRAINIAN ARMY
         </h2>
       </header>
@@ -167,16 +183,13 @@ function App() {
           </div>
         </div>
       </main>
-
       <footer className="footerContainer">
         <div className="meterLeft" id="leftCounter">
-          <span className="meterCount">{pEth}</span>
-          {/* <img className="icon" src="icons/eth_black.png" alt="Etherium" />
-           */}
+          {isLoading ? LoadingSpinnerBlack : <span className="meterCount">{pEth}</span> }
           <EthBlackIcon className="icon meterIcon" />
         </div>
         <div className="meterRight" id="rightCounter">
-          <span className="meterCount">{hEth}</span>
+          {isLoading ? LoadingSpinnerWhite : <span className="meterCount">{hEth}</span> }
           <EthWHiteIcon className="icon meterIcon" />
         </div>
       </footer>
