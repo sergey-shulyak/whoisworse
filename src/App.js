@@ -4,7 +4,7 @@ import Header from "./Header";
 import Contestants from "./Contestants";
 import Footer from "./Footer";
 
-import { getEthBalance } from "./api";
+import { getEthBalance, getOverallBalance } from "./api";
 import { ETH_DIVIDER } from "./constants";
 
 import "./App.css";
@@ -16,7 +16,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const formatAmount = (val) => parseFloat((val / ETH_DIVIDER).toFixed(3));
+    const toFloat = (val) => val / ETH_DIVIDER;
+    const toFixed = (val) => parseFloat(val.toFixed(3));
     const buildProportions = (a, b) => {
       const aPerc = (a * 100) / (a + b);
       return [aPerc, 100 - aPerc];
@@ -24,9 +25,12 @@ function App() {
     const setElementWidth = (id, val) =>
       (document.getElementById(id).style.width = `${val}%`);
     const getBalances = () => {
-      getEthBalance().then(([pData, hData]) => {
-        const p = formatAmount(pData);
-        const h = formatAmount(hData);
+      getEthBalance().then(async ([pAmount, hAmount]) => {
+        const [pOverall, hOverall] = await getOverallBalance();
+
+        const p = toFixed(toFloat(pAmount) + pOverall);
+        const h = toFixed(toFloat(hAmount) + hOverall);
+
         const [pVal, hVal] = buildProportions(p, h);
 
         setPEth(p);
